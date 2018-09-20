@@ -39,7 +39,7 @@ contract Motion {
         options[_optionId].voteCount ++;
 
         // trigger voted event
-        votedEvent(_optionId);
+        emit votedEvent(_optionId);
 
     }
     
