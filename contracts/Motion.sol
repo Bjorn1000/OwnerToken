@@ -13,6 +13,7 @@ contract Motion {
     mapping(uint => Option) public options;
 
     uint public optionsCount;
+    uint private voteLimit;
 
     event votedEvent (
             uint indexed _optionId
@@ -21,6 +22,7 @@ contract Motion {
     constructor () public {
         addOption("Yes");
         addOption("No");
+        voteLimit = 2;
     }
 
     function addOption (string _name) private {
