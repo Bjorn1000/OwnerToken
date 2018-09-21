@@ -56,15 +56,31 @@ App = {
     var motionInstance;
     var loader = $("#loader");
     var content = $("#content");
+    var finish = $("#finished");
+    var numerator = $('#numerator');
+    var denominator = $('#denominator');
+    var voteCounter = $('#topright2');
+    
+    voteCounter.hide();
+
+
 
     loader.show();
     content.hide();
+    finish.hide();
 
     // Load account data
     web3.eth.getCoinbase(function(err, account) {
       if (err === null) {
         App.account = account;
         $("#accountAddress").html("Your Account: " + account);
+        App.contracts.Motion.deployed().then(function(instance) {
+          motionInstance = instance;
+          return motionInstance.newVoters(App.account);
+        }).then(function(voter) {
+          console.log(voter);
+          $("#accountName").html("Welcome " + voter[0]);
+        });
       }
     });
 
@@ -82,15 +98,15 @@ App = {
       for (var i = 1; i <= optionsCount; i++) {
         motionInstance.options(i).then(function(option) {
           var id = option[0];
-          var name = option[1];
+          var choice = option[1];
           var voteCount = option[2];
 
           // Render option Result
-          var optionTemplate = "<tr><th>" + id + "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
+          var optionTemplate = "<tr><td>" + choice + "</td><td>" + voteCount + "</td></tr>"
           optionsResults.append(optionTemplate);
 
           // Render option ballot option
-          var optionOption = "<option value='" + id + "' >" + name + "</ option>"
+          var optionOption = "<option value='" + id + "' >" + choice + "</ option>"
           optionsSelect.append(optionOption);
         });
       }
@@ -104,6 +120,46 @@ App = {
       content.show();
     }).catch(function(error) {
       console.warn(error);
+    });
+
+    // looks for voters and gets their data
+    App.contracts.Motion.deployed().then(function(instance) {
+      motionInstance = instance;
+      return motionInstance.voterCount();
+    }).then(function(voterCount) {
+
+      var votingResults = $("#votingResults");
+      votingResults.empty();
+      for(var i = 1; i <= voterCount.toNumber(); i++) {
+        motionInstance.indexVoters(i).then(function(voter) {
+          var name = voter[0];
+          var votingPrivilege = voter[1];
+          var tokens = voter[2].toNumber();
+          var votingTemplate = "<tr><th>" + name + "</th><td>" + tokens + "</td><td>" + votingPrivilege + "</td></tr>"
+          votingResults.append(votingTemplate);
+        });
+      }
+    });
+
+    // If all the votes have been made this section is set off
+    App.contracts.Motion.deployed().then(function(instance) {
+      motionInstance = instance;
+      filler = [];
+      return motionInstance.totalVoteCount();
+    }).then(function(count) {
+      filler.push(count.toNumber());
+      numerator.html(count.toNumber());
+      return motionInstance.voteLimit();
+    }).then(function(limit) {
+      filler.push(limit.toNumber());
+      denominator.html(limit.toNumber());
+      voteCounter.show();
+      if(filler[0] < filler[1]) {
+      }
+      else {
+        $('form').hide();
+        finish.show();
+      }
     });
   },
 

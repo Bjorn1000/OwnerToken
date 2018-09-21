@@ -59,28 +59,6 @@ contract("Motion", function(accounts) {
           assert.equal(voteCount, 0, "option 2 did not receive any votes");
         });
       });
-      it("throws an exception for double voting", function() {
-        return Motion.deployed().then(function(instance) {
-          motionInstance = instance;
-          optionId = 2;
-          motionInstance.vote(optionId, { from: accounts[1] });
-          return motionInstance.options(optionId);
-        }).then(function(option) {
-          var voteCount = option[2];
-          assert.equal(voteCount, 1, "accepts first vote");
-          // Try to vote again
-          return motionInstance.vote(optionId, { from: accounts[1] });
-        }).then(assert.fail).catch(function(error) {
-          assert(error.message.indexOf('revert') >= 0, "error message must contain revert");
-          return motionInstance.options(1);
-        }).then(function(option1) {
-          var voteCount = option1[2];
-          assert.equal(voteCount, 1, "option 1 did not receive any votes");
-          return motionInstance.options(2);
-        }).then(function(option2) {
-          var voteCount = option2[2];
-          assert.equal(voteCount, 1, "option 2 did not receive any votes");
-        });
-      });
+      
 }); 
 
