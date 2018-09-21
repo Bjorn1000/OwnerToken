@@ -16,9 +16,72 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <style>
+      
+      .topright {
+          position: absolute;
+          top: 8px;
+          right: 10px;
+          font-size: 18px;
+          margin: 40px;
+      }
+      .topright2 {
+          position: absolute;
+          top: 50px;
+          right: 20px;
+          font-size: 18px;
+          padding: 20px;
+          margin: 30px;
+      }
+      .innerTopLeft {
+        position: relative;
+        top: 1px;
+        right:10px;
+      }
+      .innerBottomRight {
+        position: relative;
+        bottom: 1px;
+        left:10px;
+      }
+      .line1 {
+        width: 50px;
+        height: 47px;
+        border-bottom: 2px solid black;
+        -webkit-transform:
+            translateY(40px)
+            translateX(-5px)
+            rotate(-55deg);
+        position: absolute;
+        top: -33px;
+        left: -13px;
+    }
+    .topLeft {
+          position: absolute;
+          top: 8px;
+          left: 10px;
+          font-size: 18px;
+          width: 500px;
+          max-width: 400px;
+      }
+
+
+      </style>
   </head>
   <body>
-    <div class="container" style="width: 650px;">
+    <div class="topLeft container" style="border: 1px solid black">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Tokens</th>
+                <th scope="col">Voting privileges</th>
+              </tr>
+            </thead>
+            <tbody id="votingResults">
+            </tbody>
+          </table>
+    </div>
+    <div class="container" style="width: 650px; border: 1px solid black;">
       <div class="row">
         <div class="col-lg-12">
           <h1 class="text-center">Motion Results</h1>
@@ -31,8 +94,8 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Name</th>
+
+                  <th scope="col">Choice</th>
                   <th scope="col">Votes</th>
                 </tr>
               </thead>
@@ -50,8 +113,19 @@
               <hr />
             </form>
             <p id="accountAddress" class="text-center"></p>
+            <p id="accountName" class="text-center" style="font-size: 20px"></p>
+            <h1 id="finished" class="text-center">Voting finished</h1>
+            
           </div>
         </div>
+      </div>
+      <div class="topright">
+        Votes:
+      </div>
+      <div class="topright2">
+        <div class="innerTopLeft" id="numerator"></div>
+        <div class="line1"></div>
+        <div class="innerBottomRight" id="denominator"></div>
       </div>
     </div>
 

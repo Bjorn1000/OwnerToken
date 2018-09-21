@@ -13,7 +13,7 @@ contract OwnerToken {
         address indexed _to,
         uint256 _value
     );
-    // trasnfer event
+    
     event Approval(
         address indexed _owner,
         address indexed _spender,
@@ -22,14 +22,13 @@ contract OwnerToken {
 
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
-    //allowance
     constructor(uint256 _initialSupply) public {
         balanceOf[msg.sender] = _initialSupply;
         totalSupply = _initialSupply;
     }
 
     function transfer(address _to,  uint256 _value) public returns (bool success) {
-        require(balanceOf[msg.sender] >= _value);
+        require(balanceOf[msg.sender] >= _value, "you can't send more tokens than you possess");
 
         balanceOf[msg.sender] -= _value;
         balanceOf[_to] += _value;
@@ -46,8 +45,8 @@ contract OwnerToken {
     
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
 
-        require(_value <= balanceOf[_from]);
-        require(_value <= allowance[_from][msg.sender]);
+        require(_value <= balanceOf[_from], "sending address does not have enough tokens");
+        require(_value <= allowance[_from][msg.sender], "sending address is not authorized to send that many tokens");
         
 
         balanceOf[_from] -= _value;
