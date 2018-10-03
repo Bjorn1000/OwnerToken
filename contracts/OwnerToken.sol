@@ -8,6 +8,10 @@ contract OwnerToken {
     string public version = "v0.01";
     uint256 public totalSupply;
 
+
+
+
+
     event Transfer(
         address indexed _from,
         address indexed _to,
