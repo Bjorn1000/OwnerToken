@@ -1,12 +1,15 @@
-const path = require('path')
+const path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: path.join(__dirname, 'src/js', 'App.js'),
   devServer: {
     contentBase: path.join(__dirname, 'src'),
+    historyApiFallback: true,
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'build.js'
+    filename: 'build.js',
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -27,5 +30,10 @@ module.exports = {
         include: '/build/contracts/'
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html'
+    })
+  ]
 }
