@@ -20,7 +20,8 @@ class Motion extends React.Component {
       proposalComplete: false,
       proposalAccount: '', 
       kind: '',
-      voterCount: 0
+      voterCount: 0,
+      totalVoteCount: 0
 
     }
 
@@ -43,15 +44,11 @@ class Motion extends React.Component {
 
     this.proposal.deployed().then((proposalInstance) => {
       this.proposalInstance = proposalInstance;
-      return this.proposalInstance.voterCount();
-      
+      return this.proposalInstance.voterCount();  
     }).then((count) => {
-      //console.log(count.toNumber() + " count");
       this.setState({voterCount: count.toNumber()});
     });
 
-
-    // TODO: Refactor with promise chain
     this.web3.eth.getCoinbase((err, account) => {
       this.setState({ account })
       this.proposal.deployed().then((proposalInstance) => {
@@ -80,8 +77,6 @@ class Motion extends React.Component {
       this.proposalInstance = proposalInstance;
       return this.proposalInstance.selectedProposal();
     }).then((selected) => {
-      console.log(selected[0].toNumber());
-      console.log(selected[1]);
       if(selected[1] == "mint") {
         
         return this.proposalInstance.mintMotions(selected[0].toNumber()).then((result) => {
@@ -91,19 +86,11 @@ class Motion extends React.Component {
             proposalAmount: result[1].toNumber(),
             proposalComplete: result[2]
           });
-          /*
-          console.log(result[0].toNumber());
-          console.log(result[1].toNumber());
-          console.log(result[2]);
-          */
         });
         
       }
       if(selected[1] == "transfer") {
-        console.log("this is transfer");
-        
         return this.proposalInstance.transferMotions(selected[0].toNumber()).then((result) => {
-          console.log(result);
           this.setState({
             kind: selected[1],
             proposalNumber: result[0].toNumber(),
@@ -111,16 +98,24 @@ class Motion extends React.Component {
             proposalAccount: result[2],
             proposalComplete: result[3]
           });
-
-          console.log(this.state.proposalNumber);
-          console.log(this.state.proposalAmount);
-          console.log(this.state.proposalAccount);
-          console.log(this.state.proposalComplete);
-        });
-        
+        });   
       }
     });
 
+    
+    this.proposal.deployed().then((proposalInstance) => {
+      this.proposalInstance = proposalInstance;
+      return this.proposalInstance.optionsCount();
+    }).then((count) =>{
+      var totalCount = 0;
+      for(var i = 1; i <= count; i++) {
+        this.proposalInstance.options(i).then((option) => {
+          totalCount = totalCount + option[2].toNumber();
+          this.setState({totalVoteCount: totalCount});
+          console.log(this.state.totalVoteCount);
+        });
+      }
+    });
     
   }
 
@@ -155,7 +150,6 @@ class Motion extends React.Component {
                 account={this.state.account}
                 options={this.state.options}
                 hasVoted={this.state.hasVoted}
-
                 castVote={this.castVote} />
           }
 

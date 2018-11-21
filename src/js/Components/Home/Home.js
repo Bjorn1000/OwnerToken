@@ -60,6 +60,7 @@ class Home extends Component {
         });
       }); 
 
+      /*
       this.proposal.deployed().then((proposalInstance) => {
         this.proposalInstance = proposalInstance;
         return this.proposalInstance.selectedProposal()
@@ -73,6 +74,7 @@ class Home extends Component {
           this.setState({proposalSelected: true});
         }
       });
+      */
     }
 
     

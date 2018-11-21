@@ -62,7 +62,7 @@ class Register extends Component {
 
   handleSubmit(event) {
     this.proposal.defaults({
-      from:this.web3.eth.accounts[0]
+      from:this.props.web3.eth.accounts[0]
     });
     console.log(this.state.value);
     var value = this.state.value;
