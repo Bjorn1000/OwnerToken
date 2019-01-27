@@ -8,20 +8,12 @@ contract Election {
     mapping(uint => address) public votersByIndex;
     mapping(address => bool) public votersByAddress;
     mapping(address => mapping(uint => bool)) public voters2;
-    //mapping(uint => Candidate) public candidates;
     uint public votersCount;
     uint public motionCount;
 
     mapping(uint => Motion) public motions;
 
     OwnerToken public tokenContract;
-
-    // motionName - important because it's number after a space is used
-    // voteFor - used in conjunction with voteAgainst to generate totalVotes
-    // voteAgainst - votes registered against, shuts does votes
-    // amount - used in both kinds of transfers, amount of tokens moving between accounts
-    // addressTo - this is only used in transferance
-    // motionId - used for selecting which motion you are voting on, identifer
     
     struct Motion {
         string motionName;
@@ -62,11 +54,6 @@ contract Election {
     }
 
     function Election (OwnerToken _tokenContract) public {
-        /*
-        addMotion("Motion 1", 100, 0x0, "doing", 99, 98);
-        addMotion("Motion 2", 200, 0x0, "done", 0, 99);
-        addMotion("Motion 3", 300, 0x0, "todo", 0, 1);
-        */
         tokenContract = _tokenContract;
     }
 
@@ -95,12 +82,9 @@ contract Election {
 
 
 
-    function executeMotion(uint _motionId) public {
-        // needs operations from previous versions
-
-
-
-        // update motionStaate
+    function finishMotion(uint _motionId) public {
         motions[_motionId].motionState = "done";
+        
+        emit votedEvent(_motionId);
     }
 }

@@ -215,9 +215,6 @@ class App extends React.Component {
       toBlock: 'latest'
     }).watch((error, event) => {
       this.setState({ voting: false })
-
-      
-      
       this.electionInstance.motions(event.args._motionId.toNumber()).then((motion) => {
         let motions = this.state.motions;
         let newMotion  = {
@@ -238,9 +235,6 @@ class App extends React.Component {
         this.setState({
           motions: motions
         });
-        
-        
-
       });
 
     })
@@ -283,6 +277,7 @@ class App extends React.Component {
 
       });
     })
+
   }
 
   
@@ -316,20 +311,22 @@ class App extends React.Component {
   }
 
   motionExecute(motionId) {
-    console.log('goin on');
 
-    console.log(motionId);
-    console.log(this.state.motions[motionId - 1]);
     let executedMotion = this.state.motions[motionId - 1];
     this.ownertoken.defaults({
       from:this.web3.eth.accounts[0]
     })
+
     event.preventDefault();
     this.ownertoken.deployed().then((tokenInstance) => {
       this.tokenInstance = tokenInstance;
-      console.log('walk it');
       this.tokenInstance.mint(executedMotion.amount, executedMotion.addressTo).then(() => {
-        console.log('talk it');
+        console.log(executedMotion.motionId);
+        
+        this.electionInstance.finishMotion(executedMotion.motionId, { from: this.state.account }).then(() => {
+          console.log('refresh and get your balance :)');
+        });
+        
         
       });
     });
