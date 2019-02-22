@@ -1,5 +1,5 @@
 // solium-disable linebreak-style
-pragma solidity ^0.4.2;
+pragma solidity >=0.4.2;
 import "./SafeMath.sol";
 
 contract OwnerToken {

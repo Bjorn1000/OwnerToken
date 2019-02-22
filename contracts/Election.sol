@@ -1,5 +1,5 @@
 // solium-disable linebreak-style
-pragma solidity ^0.4.2;
+pragma solidity >=0.4.2;
 import "./OwnerToken.sol";
 
 contract Election {
@@ -53,7 +53,7 @@ contract Election {
         emit registrationEvent(msg.sender);
     }
 
-    function Election (OwnerToken _tokenContract) public {
+    constructor(OwnerToken _tokenContract) public {
         tokenContract = _tokenContract;
     }
 

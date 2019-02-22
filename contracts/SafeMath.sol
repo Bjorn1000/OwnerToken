@@ -1,5 +1,5 @@
 // solium-disable linebreak-style
-pragma solidity ^0.4.11;
+pragma solidity >=0.4.11;
 
 
 /**
