@@ -38,7 +38,7 @@ contract Election {
 
 
 
-    function addMotion (string _motionName, uint _amount, address _addressTo, string memory _motionState) public {
+    function addMotion (string memory _motionName, uint _amount, address _addressTo, string memory _motionState) public {
         motionCount ++;
         motions[motionCount] = Motion(_motionName, _amount, _addressTo, motionCount, _motionState, 0, 0);
 
