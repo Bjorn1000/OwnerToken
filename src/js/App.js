@@ -293,7 +293,7 @@ class App extends React.Component {
     // need motion count to create proper names
     this.electionInstance.motionCount().then((count) => {
       var motionName = "Motion " + (count.toNumber() + 1);
-      this.electionInstance.addMotion(motionName, this.state.amount, this.state.addressTo, "todo", 0, 0, { from: this.state.account });
+      this.electionInstance.addMotion(motionName, this.state.amount, this.state.addressTo, "todo", { from: this.state.account });
     });
     
 
